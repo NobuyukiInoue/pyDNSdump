@@ -1,12 +1,12 @@
-# Example_dnspython
+# pyDNSdump
 
-a program that sends DNS requests and displays the answers.
+This program sends a UDP DNS request and outputs a response.
 
 
-## 1. Example for pyDNSdump.py
+## 1. How to execute pyDNSdump.py
 
 ```
-python pyDNSdump.py [dns server] [resolv string] [record type]
+python pyDNSdump.py [dnsserver] [target] [recordtype]
 ```
 
 ### Supported record types
