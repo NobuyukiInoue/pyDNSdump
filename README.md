@@ -1,6 +1,6 @@
 # pyDNSdump
 
-This program sends a UDP DNS request and outputs a response.
+This program sends a DNS UDP request and outputs a response.
 
 
 ## 1. How to execute pyDNSdump.py
