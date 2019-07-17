@@ -418,7 +418,7 @@ def get_answer(data, i, title, record_length):
             i = print_name(data, "Name:",  i)
 
         elif type_name == "HINFO":
-            # Name:
+            # HINFO:
             i = print_name(data, "HINFO:", i)
 
         elif type_name == "MX":
@@ -473,6 +473,10 @@ def get_answer(data, i, title, record_length):
                 i += result_length
 
         elif type_name == "TXT":
+            """
+            # TXT:
+            i = print_name(data, "TXT:", i)
+            """
             fld_Text = data[i:i + fld_data_length]
             format_str = "{0:04}: {1:0" + str(2*len(fld_Text)) + "x} \n {2:18} {3:<24} {4}"
             print(format_str.format(i, int.from_bytes(fld_Text, 'big'), "", "Text:", fld_Text))
