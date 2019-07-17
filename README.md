@@ -33,6 +33,7 @@ python pyDNSdump.py [dnsserver] [target] [recordtype]
 * SRV(33)
 * DS(43)
 * RRSIG(46)
+* NSEC(47)
 * DNSKEY(48)
 * NSEC3(50)
 * NSEC3PARAM(51)

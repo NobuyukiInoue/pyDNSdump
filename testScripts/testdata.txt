@@ -12,3 +12,4 @@ _http._tcp.update.freebsd.org srv
 freebsd.org caa
 linux.org hinfo
 linux.org any
+52.in-addr.arpa nsec

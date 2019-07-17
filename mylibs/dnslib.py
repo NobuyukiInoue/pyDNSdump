@@ -82,6 +82,8 @@ def set_type(type):
         return 0x002b.to_bytes(2, 'big')
     elif type == 'RRSIG':
         return 0x002e.to_bytes(2, 'big')
+    elif type == 'NSEC':
+        return 0x002f.to_bytes(2, 'big')
     elif type == 'DNSKEY':
         return 0x0030.to_bytes(2, 'big')
     elif type == 'NSEC3':
@@ -130,6 +132,8 @@ def get_type(int_type):
         return "DS"
     elif int_type == 46:
         return "RRSIG"
+    elif int_type == 47:
+        return "NSEC"
     elif int_type == 48:
         return "DNSKEY"
     elif int_type == 50:
@@ -542,10 +546,24 @@ def get_answer(data, i, title, record_length):
 
             fld_public_key_length = fld_data_length - (i - i_start)
             fld_public_key = data[i:i + fld_public_key_length]
-            format_str = "{0:04x}: {1:0" + str(2*fld_public_key_length) + "x}\n {2:18} {2:<24}"
+            format_str = "{0:04x}: {1:0" + str(2*fld_public_key_length) + "x}\n {2:18} {3:<24}"
             print(format_str.format(i, int.from_bytes(fld_public_key, 'big'), "", "Public Key:"), end = "")
             print_result_bin(fld_public_key)
             i += fld_public_key_length
+
+        elif type_name == "NSEC":
+            i_start = i
+
+            # Next domain name:
+            i = print_name(data, "Next domain name:", i)
+
+            fld_bitmap_length = fld_data_length - (i - i_start)
+            fld_bitmap = data[i:i + fld_bitmap_length]
+            format_str = "{0:04x}: {1:0" + str(2*fld_bitmap_length) + "x}\n {2:18} {3:<24}"
+            print(format_str.format(i, int.from_bytes(fld_bitmap, 'big'), "", "bit map:"), end = "")
+            print_result_bin(fld_bitmap)
+            i += fld_bitmap_length
+
 
         elif type_name == "NSEC3" or type_name == "NSEC3PARAM":
             i_start = i
