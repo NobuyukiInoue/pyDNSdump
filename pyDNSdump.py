@@ -40,7 +40,7 @@ def main():
           "target        = {2}\n" 
           "record type   = {3}".format(dnsserver, PORT, target, recordtype))
 
-    data_send = mylibs.dnslib.set_data(1, target, recordtype)
+    data_send = mylibs.dnslib.set_Header_and_Question(1, target, recordtype)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # send a DNS udp request.

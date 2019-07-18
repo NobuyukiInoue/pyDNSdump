@@ -12,7 +12,7 @@ def is_ipv4_addr(resolvstr):
     return True
 
 
-def set_data(Transaction_ID, resolvstring, type):
+def set_Header_and_Question(Transaction_ID, resolvstring, type):
     data = Transaction_ID.to_bytes(2, 'big')    # Transaction ID
     data += 0x0100.to_bytes(2, 'big')           # Flags
     data += 0x0001.to_bytes(2, 'big')           # Questions
@@ -29,13 +29,13 @@ def set_data(Transaction_ID, resolvstring, type):
             data += len(name).to_bytes(1, 'big')
             data += name.encode(encoding = 'ascii')
         data += 0x00.to_bytes(1, 'big')
-    data += set_type(type)                      # Type
+    data += set_RecordType(type)                      # Type
     data += 0x0001.to_bytes(2, 'big')           # Class ... IN(0x0001)
 
     return data
 
 
-def set_type(type):
+def set_RecordType(type):
     if type.isnumeric() == True:
         if int(type) > 0:
             return int(type).to_bytes(2, 'big')
