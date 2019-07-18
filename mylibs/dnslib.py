@@ -13,23 +13,12 @@ def is_ipv4_addr(resolvstr):
 
 
 def set_data(Transaction_ID, resolvstring, type):
-    # Transaction ID
-    data = Transaction_ID.to_bytes(2, 'big')
-
-    # Flags
-    data += 0x0100.to_bytes(2, 'big')
-
-    # Questions
-    data += 0x0001.to_bytes(2, 'big')
-
-    # Answer RRS
-    data += 0x0000.to_bytes(2, 'big')
-
-    # Answer RRS
-    data += 0x0000.to_bytes(2, 'big')
-
-    # Additional RRS
-    data += 0x0000.to_bytes(2, 'big')
+    data = Transaction_ID.to_bytes(2, 'big')    # Transaction ID
+    data += 0x0100.to_bytes(2, 'big')           # Flags
+    data += 0x0001.to_bytes(2, 'big')           # Questions
+    data += 0x0000.to_bytes(2, 'big')           # Answer RRS
+    data += 0x0000.to_bytes(2, 'big')           # Answer RRS
+    data += 0x0000.to_bytes(2, 'big')           # Additional RRS
 
     # Queries
     if resolvstring == ".":
@@ -40,12 +29,8 @@ def set_data(Transaction_ID, resolvstring, type):
             data += len(name).to_bytes(1, 'big')
             data += name.encode(encoding = 'ascii')
         data += 0x00.to_bytes(1, 'big')
-
-    # Type
-    data += set_type(type)
-
-    # Class ... IN(0x0001)
-    data += 0x0001.to_bytes(2, 'big')
+    data += set_type(type)                      # Type
+    data += 0x0001.to_bytes(2, 'big')           # Class ... IN(0x0001)
 
     return data
 
