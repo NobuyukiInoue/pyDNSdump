@@ -42,7 +42,7 @@ def set_Header_and_Question(Transaction_ID, resolvstring, type):
             data += len(name).to_bytes(1, 'big')
             data += name.encode(encoding = 'ascii')
         data += 0x00.to_bytes(1, 'big')
-    data += set_RecordType(type)                      # Type
+    data += set_RecordType(type.upper())        # Type
     data += 0x0001.to_bytes(2, 'big')           # Class ... IN(0x0001)
 
     return data
