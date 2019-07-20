@@ -4,7 +4,7 @@ This program sends a DNS UDP request and outputs a response.
 
 ## Requirements
 
-Python 3.5 or later 
+Python 3.5 or later.
 
 ### Supported OS
 
@@ -17,6 +17,11 @@ Python 3.5 or later
 ```
 python pyDNSdump.py [dnsserver] [target] [recordtype]
 ```
+
+## pyDNSdump on AWS lambda
+
+http://www.asahi-net.or.jp/~gx3n-inue/lambda/pyDNSdump/index.html
+
 
 ## Supported record types
 
@@ -192,13 +197,7 @@ PS Z:\pyDNSdump>
 
 ```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com any
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 255
 ```
 
@@ -206,9 +205,6 @@ python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 255
 
 ```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com a
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 1
 ```
 
@@ -216,9 +212,6 @@ python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 1
 
 ```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com cname
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 5
 ```
 
@@ -226,9 +219,6 @@ python pyDNSdump.py 192.168.1.1 www.hackerzlab.com 5
 
 ```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com ns
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com 2
 ```
 
@@ -236,9 +226,6 @@ python pyDNSdump.py 192.168.1.1 hackerzlab.com 2
 
 ```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com mx
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com 15
 ```
 
@@ -246,9 +233,6 @@ python pyDNSdump.py 192.168.1.1 hackerzlab.com 15
 
 ```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com soa
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com 6
 ```
 
@@ -256,9 +240,6 @@ python pyDNSdump.py 192.168.1.1 hackerzlab.com 6
 
 ```
 python pyDNSdump.py 192.168.1.1 8.8.8.8 ptr
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 8.8.8.8 12
 ```
 
@@ -266,9 +247,6 @@ python pyDNSdump.py 192.168.1.1 8.8.8.8 12
 
 ```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com caa
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 hackerzlab.com 257
 ```
 
@@ -276,8 +254,5 @@ python pyDNSdump.py 192.168.1.1 hackerzlab.com 257
 
 ```
 python pyDNSdump.py 192.168.1.1 _http._tcp.hackerzlab.com srv
-```
-or
-```
 python pyDNSdump.py 192.168.1.1 _http._tcp.hackerzlab.com 33
 ```
