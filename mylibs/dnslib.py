@@ -35,55 +35,7 @@ def set_Header_and_Question(Transaction_ID, resolvstring, type):
     return data
 
 
-def set_RecordType(type):
-    if type.isnumeric() == True:
-        if int(type) > 0:
-            return int(type).to_bytes(2, 'big')
-
-    # Type
-    if type == None:
-        return 0x00ff.to_bytes(2, 'big')
-    elif type == 'A':
-        return 0x0001.to_bytes(2, 'big')
-    elif type == 'NS':
-        return 0x0002.to_bytes(2, 'big')
-    elif type == 'CNAME':
-        return 0x0005.to_bytes(2, 'big')
-    elif type == 'SOA':
-        return 0x0006.to_bytes(2, 'big')
-    elif type == 'PTR':
-        return 0x000c.to_bytes(2, 'big')
-    elif type == 'HINFO':
-        return 0x000d.to_bytes(2, 'big')
-    elif type == 'MX':
-        return 0x000f.to_bytes(2, 'big')
-    elif type == 'TXT':
-        return 0x0010.to_bytes(2, 'big')
-    elif type == 'AAAA':
-        return 0x001c.to_bytes(2, 'big')
-    elif type == 'SRV':
-        return 0x0021.to_bytes(2, 'big')
-    elif type == 'DS':
-        return 0x002b.to_bytes(2, 'big')
-    elif type == 'RRSIG':
-        return 0x002e.to_bytes(2, 'big')
-    elif type == 'NSEC':
-        return 0x002f.to_bytes(2, 'big')
-    elif type == 'DNSKEY':
-        return 0x0030.to_bytes(2, 'big')
-    elif type == 'NSEC3':
-        return 0x0032.to_bytes(2, 'big')
-    elif type == 'NSEC3PARAM':
-        return 0x0033.to_bytes(2, 'big')
-    elif type == 'CAA':
-        return 0x0101.to_bytes(2, 'big')
-    elif type == 'ANY':
-        return 0x00ff.to_bytes(2, 'big')
-    else:
-        return 0x00ff.to_bytes(2, 'big')
-
-
-def get_type(int_type):
+def set_type_list():
     """
     RFC 1035
     https://www.ietf.org/rfc/rfc1035.txt
@@ -91,42 +43,52 @@ def get_type(int_type):
     Wikipedia - List of DNS record type
     https://ja.wikipedia.org/wiki/DNS%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%82%BF%E3%82%A4%E3%83%97%E3%81%AE%E4%B8%80%E8%A6%A7
     """
-    if int_type == 255:
-        return "ANY"
-    elif int_type == 1:
-        return "A"
-    elif int_type == 2:
-        return "NS"
-    elif int_type == 5:
-        return "CNAME"
-    elif int_type == 6:
-        return "SOA"
-    elif int_type == 12:
-        return "PTR"
-    elif int_type == 13:
-        return "HINFO"
-    elif int_type == 15:
-        return "MX"
-    elif int_type == 16:
-        return "TXT"
-    elif int_type == 28:
-        return "AAAA"
-    elif int_type == 33:
-        return "SRV"
-    elif int_type == 43:
-        return "DS"
-    elif int_type == 46:
-        return "RRSIG"
-    elif int_type == 47:
-        return "NSEC"
-    elif int_type == 48:
-        return "DNSKEY"
-    elif int_type == 50:
-        return "NSEC3"
-    elif int_type == 51:
-        return "NSEC3PARAM"
-    elif int_type == 257:
-        return "CAA"
+    type_list = {}
+    type_list['A'] = 0x0001.to_bytes(2, 'big')          # 1
+    type_list['NS'] = 0x0002.to_bytes(2, 'big')         # 2
+    type_list['CNAME'] = 0x0005.to_bytes(2, 'big')      # 5
+    type_list['SOA'] = 0x0006.to_bytes(2, 'big')        # 6
+    type_list['PTR'] = 0x000c.to_bytes(2, 'big')        # 12
+    type_list['HINFO'] = 0x000d.to_bytes(2, 'big')      # 13
+    type_list['MX'] = 0x000f.to_bytes(2, 'big')         # 15
+    type_list['TXT'] = 0x0010.to_bytes(2, 'big')        # 16
+    type_list['AAAA'] = 0x001c.to_bytes(2, 'big')       # 28
+    type_list['SRV'] = 0x0021.to_bytes(2, 'big')        # 33
+    type_list['DS'] = 0x002b.to_bytes(2, 'big')         # 43
+    type_list['RRSIG'] = 0x002e.to_bytes(2, 'big')      # 46
+    type_list['NSEC'] = 0x002f.to_bytes(2, 'big')       # 47
+    type_list['DNSKEY'] = 0x0030.to_bytes(2, 'big')     # 48
+    type_list['NSEC3'] = 0x0032.to_bytes(2, 'big')      # 50
+    type_list['NSEC3PARAM'] = 0x0033.to_bytes(2, 'big') # 51
+    type_list['CAA'] = 0x0101.to_bytes(2, 'big')        # 257
+    type_list['ANY'] = 0x00ff.to_bytes(2, 'big')        # 255
+
+    return type_list
+
+
+def set_RecordType(type):
+    if type.isnumeric() == True:
+        if int(type) > 0:
+            return int(type).to_bytes(2, 'big')
+
+    # set Type list
+    type_list = set_type_list()
+
+    if type in type_list.keys():
+        return type_list[type]
+    else:
+        return int(type).to_bytes(255, 'big')
+
+
+def get_type(type_val):
+    target_type_val = type_val.to_bytes(2, 'big')
+
+    # set Type list
+    type_list = set_type_list()
+
+    if target_type_val in type_list.values():
+        # return the first one found.
+        return [key for key, val in type_list.items() if val == target_type_val][0]
     else:
         return ""
 
