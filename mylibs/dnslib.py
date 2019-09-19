@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import mylibs.recordtype
+
 def is_ipv4_addr(resolvstr):
     flds = resolvstr.split(".")
     if len(flds) != 4:
@@ -29,68 +31,14 @@ def set_Header_and_Question(Transaction_ID, resolvstring, type):
             data += len(name).to_bytes(1, 'big')
             data += name.encode(encoding = 'ascii')
         data += 0x00.to_bytes(1, 'big')
-    data += set_RecordType(type)                      # Type
+
+    # set Type list
+    mylibs.recordtype.set_type_list()
+
+    data += mylibs.recordtype.set_RecordType(type)                      # Type
     data += 0x0001.to_bytes(2, 'big')           # Class ... IN(0x0001)
 
     return data
-
-
-def set_type_list():
-    """
-    RFC 1035
-    https://www.ietf.org/rfc/rfc1035.txt
-
-    Wikipedia - List of DNS record type
-    https://ja.wikipedia.org/wiki/DNS%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%82%BF%E3%82%A4%E3%83%97%E3%81%AE%E4%B8%80%E8%A6%A7
-    """
-    type_list = {}
-    type_list['A'] = 0x0001.to_bytes(2, 'big')          # 1
-    type_list['NS'] = 0x0002.to_bytes(2, 'big')         # 2
-    type_list['CNAME'] = 0x0005.to_bytes(2, 'big')      # 5
-    type_list['SOA'] = 0x0006.to_bytes(2, 'big')        # 6
-    type_list['PTR'] = 0x000c.to_bytes(2, 'big')        # 12
-    type_list['HINFO'] = 0x000d.to_bytes(2, 'big')      # 13
-    type_list['MX'] = 0x000f.to_bytes(2, 'big')         # 15
-    type_list['TXT'] = 0x0010.to_bytes(2, 'big')        # 16
-    type_list['AAAA'] = 0x001c.to_bytes(2, 'big')       # 28
-    type_list['SRV'] = 0x0021.to_bytes(2, 'big')        # 33
-    type_list['DS'] = 0x002b.to_bytes(2, 'big')         # 43
-    type_list['RRSIG'] = 0x002e.to_bytes(2, 'big')      # 46
-    type_list['NSEC'] = 0x002f.to_bytes(2, 'big')       # 47
-    type_list['DNSKEY'] = 0x0030.to_bytes(2, 'big')     # 48
-    type_list['NSEC3'] = 0x0032.to_bytes(2, 'big')      # 50
-    type_list['NSEC3PARAM'] = 0x0033.to_bytes(2, 'big') # 51
-    type_list['CAA'] = 0x0101.to_bytes(2, 'big')        # 257
-    type_list['ANY'] = 0x00ff.to_bytes(2, 'big')        # 255
-
-    return type_list
-
-
-def set_RecordType(type):
-    if type.isnumeric() == True:
-        if int(type) > 0:
-            return int(type).to_bytes(2, 'big')
-
-    # set Type list
-    type_list = set_type_list()
-
-    if type in type_list.keys():
-        return type_list[type]
-    else:
-        return int(type).to_bytes(255, 'big')
-
-
-def get_type(type_val):
-    target_type_val = type_val.to_bytes(2, 'big')
-
-    # set Type list
-    type_list = set_type_list()
-
-    if target_type_val in type_list.values():
-        # return the first one found.
-        return [key for key, val in type_list.items() if val == target_type_val][0]
-    else:
-        return ""
 
 
 def get_class(int_class):
@@ -210,7 +158,7 @@ def print_recv_data(data):
     i = print_name(data, "Name:", i)
 
     fld_type = (data[i] << 8) + data[i + 1]
-    print("{0:04x}: {1:04x} {2:8} {3:<24} {4}({5:d})".format(i, fld_type, "", "Type:", get_type(fld_type), fld_type))
+    print("{0:04x}: {1:04x} {2:8} {3:<24} {4}({5:d})".format(i, fld_type, "", "Type:", mylibs.recordtype.get_RecordType(fld_type), fld_type))
     i += 2
 
     fld_class = (data[i] << 8) + data[i + 1]
@@ -348,7 +296,7 @@ def get_answer(data, i, title, record_length):
             i += 1
 
         fld_type = (data[i] << 8) + data[i + 1]
-        type_name = get_type(fld_type)
+        type_name = mylibs.recordtype.get_RecordType(fld_type)
         print("{0:04x}: {1:04x} {2:8} {3:<24} {4}({5:d})".format(i, fld_type, "", "Type:", type_name, fld_type))
         i += 2
 
