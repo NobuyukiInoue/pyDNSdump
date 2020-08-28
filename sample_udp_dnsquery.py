@@ -53,7 +53,7 @@ def set_RecordType(type):
             return int(type).to_bytes(2, 'big')
 
     # Type
-    if type == None:
+    if type is None:
         return 0x00ff.to_bytes(2, 'big')
     elif type == 'A':
         return 0x0001.to_bytes(2, 'big')
